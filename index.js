@@ -51,6 +51,10 @@ async function run() {
             const result = await allClassCollection.find().toArray()
             res.send(result)
         })
+        // my classes 
+        app.post('/myClass', async (req, res) => {
+
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
