@@ -34,6 +34,7 @@ async function run() {
         const classesCollection = client.db("summerDb").collection("classes");
         const instructorCollection = client.db("summerDb").collection("instructors");
         const allClassCollection = client.db("summerDb").collection("allClasses");
+        const myClassCollection = client.db("summerDb").collection("myClasses");
         // all classes 
         app.get('/classes', async (req, res) => {
 
@@ -53,7 +54,9 @@ async function run() {
         })
         // my classes 
         app.post('/myClass', async (req, res) => {
-
+            const doc = req.body;
+            const result = await myClassCollection.insertOne(doc);
+            res.send(result)
         })
 
         // Send a ping to confirm a successful connection
