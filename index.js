@@ -82,7 +82,21 @@ async function run() {
             const result = await myClassCollection.deleteOne(query);
             res.send(result)
         })
+        // create payment intent 
+        app.post('/create-payment-intent', async (req, res) => {
+            const { price } = req.body;
+            const amount = price * 100;
+            console.log(price, amount);
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: amount,
+                currency: 'usd',
+                payment_method_types: ['card']
+            });
 
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+            });
+        })
 
 
         // Send a ping to confirm a successful connection
