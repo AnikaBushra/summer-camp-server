@@ -82,6 +82,7 @@ async function run() {
             const result = await myClassCollection.deleteOne(query);
             res.send(result)
         })
+        // payment method 
         // create payment intent 
         app.post('/create-payment-intent', async (req, res) => {
             const { price } = req.body;
