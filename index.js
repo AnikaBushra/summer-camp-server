@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // summerCamp 
 // mukVm49gd6Oosn3J 
 
@@ -56,7 +56,7 @@ async function run() {
 
         app.get('/myClass', async (req, res) => {
             let query = {}
-            console.log(req.query.email);
+
             if (req.query?.email) {
                 query = { email: req.query.email }
 
@@ -65,10 +65,10 @@ async function run() {
             res.send(result)
         })
 
-        // app.get('/myClass', async (req, res) => {
-        //     const result = await myClassCollection.find().toArray()
-        //     res.send(result)
-        // })
+        app.get('/myClass', async (req, res) => {
+            const result = await myClassCollection.find().toArray()
+            res.send(result)
+        })
 
         app.post('/myClass', async (req, res) => {
             const doc = req.body;
@@ -76,7 +76,12 @@ async function run() {
             res.send(result)
         })
 
-
+        app.delete('/myClass/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await myClassCollection.deleteOne(query);
+            res.send(result)
+        })
 
 
 
