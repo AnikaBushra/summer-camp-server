@@ -3,9 +3,9 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 const port = process.env.PORT || 5000;
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-// summerCamp 
-// mukVm49gd6Oosn3J 
+
 
 // middleware 
 app.use(cors())
@@ -29,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const classesCollection = client.db("summerDb").collection("classes");
         const instructorCollection = client.db("summerDb").collection("instructors");
