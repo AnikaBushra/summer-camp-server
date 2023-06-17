@@ -35,6 +35,8 @@ async function run() {
         const instructorCollection = client.db("summerDb").collection("instructors");
         const allClassCollection = client.db("summerDb").collection("allClasses");
         const myClassCollection = client.db("summerDb").collection("myClasses");
+        const paymentCollection = client.db("summerDb").collection("payment");
+        const enrolledCollection = client.db("summerDb").collection("enrolled");
         // all classes 
         app.get('/classes', async (req, res) => {
 
@@ -99,7 +101,36 @@ async function run() {
             });
         })
 
+        app.post('/payments', async (req, res) => {
+            const payment = req.body;
+            console.log(payment);
 
+            const result = await paymentCollection.insertOne(payment);
+            res.send(result)
+        })
+        // ...............  
+        // my enrolled class 
+        app.post('/enrolled', async (req, res) => {
+            const doc = req.body;
+            const result = await enrolledCollection.insertOne(doc);
+            res.send(result)
+        })
+        app.get('/enrolled', async (req, res) => {
+            let query = {}
+
+            if (req.query?.email) {
+                query = { email: req.query.email }
+
+            }
+            const result = await enrolledCollection.find(query).toArray();
+            res.send(result)
+        })
+        app.get('/enrolled', async (req, res) => {
+
+            const result = await enrolledCollection.find().toArray();
+            res.send(result)
+        })
+        // ................. 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
